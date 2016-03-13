@@ -14,4 +14,4 @@ Next, use cmake to generate a Makefile and invoke make to build the project.
 cmake .. && make -j 8
 ```
 
-The compiled library will now be available in the `lib/Release` directory of our build directory.
+The compiled library will now be available in the `lib` directory of our build directory.
