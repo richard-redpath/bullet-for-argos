@@ -101,10 +101,10 @@ public:
 	btQuaternion(const btScalar& yaw, const btScalar& pitch, const btScalar& roll)
 	{ 
 #ifndef BT_EULER_DEFAULT_ZYX
-		setEuler(yaw, pitch, roll); 
+		setEuler(yaw, pitch, roll);
 #else
 		setEulerZYX(yaw, pitch, roll); 
-#endif 
+#endif
 	}
   /**@brief Set the rotation using axis angle notation 
    * @param axis The axis around which to rotate

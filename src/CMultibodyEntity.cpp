@@ -56,12 +56,19 @@ void CMultibodyEntity::Init(TConfigurationNode &t_tree)
 	*currentState = *initialState;
 
 	// Create a controllable entity
-	controllableEntity = new CControllableEntity(this);
-	AddComponent(*controllableEntity);
-	controllableEntity->Enable();
+	if(t_tree.FirstChild("controller"))
+	{
+		controllableEntity = new CControllableEntity(this);
+		AddComponent(*controllableEntity);
+		controllableEntity->Enable();
 
-	// And initialise it with the controller specified
-	controllableEntity->Init(GetNode(t_tree, "controller"));
+		// And initialise it with the controller specified
+		controllableEntity->Init(GetNode(t_tree, "controller"));
+	}
+	else
+	{
+		controllableEntity = nullptr;
+	}
 
 	// Create embodied entity using parsed data
 	embodiedEntity = new CEmbodiedEntity(this);
@@ -94,7 +101,7 @@ void CMultibodyEntity::Init(TConfigurationNode &t_tree)
 		// Get the joint position
 		const JointDefinition& def = mot.second;
 		CVector3 position = CVector3{def.originX, def.originY, def.originZ};
-		CQuaternion orientation = quaternionFromDegrees(def.originRoll, def.originPitch, def.originYaw);
+		CQuaternion orientation = quaternionFromRadians(def.originRoll, def.originPitch, def.originYaw);
 
 		// And its effective axis
 		CVector3 axis = CVector3{def.axisX, def.axisY, def.axisZ};
@@ -105,12 +112,13 @@ void CMultibodyEntity::Init(TConfigurationNode &t_tree)
 
 		auto name = mot.first;
 
-        auto motor = new CMotorActuatorEntity{name, parent, child, position, orientation, axis, def.limitVelocity, def.limitEffort, -def.limitVelocity};
+        auto motor = new CMotorActuatorEntity{GetId() + "-" + name, name, parent, child, position, orientation, axis, def.limitVelocity, def.limitEffort, -def.limitVelocity};
 		motor->SetEnabled(true);
 		joints[name] = motor;
 
 		parent->ConnectMotor(motor);
-		controllableEntity->GetController().AddActuator(motor->GetID(), motor);
+		if(controllableEntity)
+			controllableEntity->GetController().AddActuator(name, motor);
     }
 
 #ifdef ARGOS_WITH_LUA
@@ -135,15 +143,20 @@ void CMultibodyEntity::Reset()
 	*currentState = *initialState;
 
 	embodiedEntity->Reset();
-	controllableEntity->Reset();
+	if(controllableEntity)
+		controllableEntity->Reset();
 
 	for(auto& pair : links)
 		pair.second->Reset();
+
+	for(auto& pair : links)
+		dynamic_cast<CEntity*>(pair.second)->Reset();
 
 	UpdateComponents();
 
 	if(rootLink)
 	{
+		rootLink->Reset();
 		auto& rootAnchor = rootLink->GetEmbodiedEntity().GetOriginAnchor();
 		rootAnchor.Position += GetEmbodiedEntity().GetOriginAnchor().Position;
 		rootAnchor.Orientation = combineARGoSQuaternions(GetEmbodiedEntity().GetOriginAnchor().Orientation, rootAnchor.Orientation);
@@ -171,8 +184,8 @@ void CMultibodyEntity::Update()
 
 //#endif
 
-REGISTER_ENTITY(CMultibodyEntity, "xml_entity", "Richard Redpath", "0.1a", "An entity defined in URDF",
-				"A generic entity which can have its shape defined in URDF format and have actuators and sensors adjusted from LUA. More details on the URDF format can be found at http://wiki.ros.org/urdf",
+REGISTER_ENTITY(CMultibodyEntity, "xml_entity", "Richard Redpath", "0.5", "An entity defined in XML",
+				"A generic entity which can have its shape defined in and XML format and have actuators and sensors adjusted from LUA. More details on the XML format can be found at http://",
 				"In Development")
 
 REGISTER_STANDARD_SPACE_OPERATIONS_ON_COMPOSABLE(CMultibodyEntity)

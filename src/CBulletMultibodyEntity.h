@@ -61,8 +61,8 @@ public:
 	 */
 	void AddToEngine(CBulletEngine &engine)
 	{
-		for (auto pair : bulletLinks) engine.AddPhysicsModel(pair.first, *pair.second);
-		for (auto pair : bulletJoints) engine.AddPhysicsModel(pair.first, *pair.second);
+		for (auto pair : bulletLinks) engine.AddPhysicsModel(pair.second->GetEmbodiedEntity().GetId(), *pair.second);
+		for (auto pair : bulletJoints) engine.AddPhysicsModel(pair.second->GetEntity()->GetId(), *pair.second);
 	}
 
 private:

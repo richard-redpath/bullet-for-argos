@@ -115,7 +115,7 @@ void CBulletMultibodyLink::addBoxToCollisionShape(btCompoundShape *pShape, Geome
  */
 void CBulletMultibodyLink::addCylinderToCollisionShape(btCompoundShape *pShape, GeometrySpecification& spec) {
 	// Build the cylinder model
-    btCollisionShape* shape = new btCylinderShape{btVector3{spec.cylinder.radius, 0.5f * spec.cylinder.length, spec.cylinder.radius}};
+    btCollisionShape* shape = new btCylinderShapeZ{btVector3{spec.cylinder.radius, spec.cylinder.radius, 0.5f * spec.cylinder.length}};
 
 	// And add it
 	addShapeToCompound(pShape, shape, spec);

@@ -126,8 +126,8 @@ inline void drawCylinder(CylinderAttributes& cylinder)
 	{
 		float angle = i * (2*PI_FLOAT/segments);
 		float x = sin(angle) * radius;
-		float z = cos(angle) * radius;
-		glVertex3f(x, 0, z);
+		float y = cos(angle) * radius;
+		glVertex3f(x, y, 0);
 	}
 	glEnd();
 
@@ -138,8 +138,8 @@ inline void drawCylinder(CylinderAttributes& cylinder)
 	{
 		float angle = i * (2*PI_FLOAT/segments);
 		float x = sin(angle) * radius;
-		float z = cos(angle) * radius;
-		glVertex3f(x, length, z);
+		float y = cos(angle) * radius;
+		glVertex3f(x, y, length);
 	}
 	glEnd();
 
@@ -149,16 +149,16 @@ inline void drawCylinder(CylinderAttributes& cylinder)
 	{
 		float angle1 = i * (2*PI_FLOAT/segments);
 		float x1 = sin(angle1) * radius;
-		float z1 = cos(angle1) * radius;
+		float y1 = cos(angle1) * radius;
 
 		float angle2 = (i+1) * (2*PI_FLOAT/segments);
 		float x2 = sin(angle2) * radius;
-		float z2 = cos(angle2) * radius;
+		float y2 = cos(angle2) * radius;
 
-		glVertex3f(x1, 0, z1);
-		glVertex3f(x1, length, z1);
-		glVertex3f(x2, length, z2);
-		glVertex3f(x2, 0, z2);
+		glVertex3f(x1, y1, 0);
+		glVertex3f(x1, y1, length);
+		glVertex3f(x2, y2, length);
+		glVertex3f(x2, y2, 0);
 	}
 	glEnd();
 }
@@ -334,6 +334,11 @@ GLuint CQTOpenGLMultibodyLinkEntity::LazyLoadModel(CMultibodyLinkEntity & entity
 	return firstListId;
 }
 
+inline float radiansToDegrees(float radians)
+{
+	return 180 * (radians/M_PI);
+}
+
 /**
  * Draw an entity
  */
@@ -367,10 +372,11 @@ void CQTOpenGLMultibodyLinkEntity::Draw(CMultibodyLinkEntity & entity)
 
 		// Rotate by the appropriate amount
 		auto& item = visualVector[i];
+
 		glTranslatef(item.originX, item.originY, item.originZ);
-		glRotatef(item.pitch, 1, 0, 0);
-		glRotatef(item.roll, 0, 1, 0);
-		glRotatef(item.yaw, 0, 0, 1);
+		glRotatef(radiansToDegrees(item.roll), 1, 0, 0);
+		glRotatef(radiansToDegrees(item.pitch), 0, 1, 0);
+		glRotatef(radiansToDegrees(item.yaw), 0, 0, 1);
 
 		// Call the correct call list
 		glCallList(firstListId + i);

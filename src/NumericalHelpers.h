@@ -7,6 +7,7 @@
 
 #include <limits>
 #include <argos3/core/utility/math/quaternion.h>
+#include <argos3/core/utility/math/vector3.h>
 
 /*
  * Some float definitions
@@ -44,7 +45,7 @@ T makeNegative(T input)
 /**
  * Convenience method to get an ARGoS quaternion from roll, pitch and yaw
  */
-inline argos::CQuaternion quaternionFromDegrees(float roll, float pitch, float yaw)
+inline argos::CQuaternion quaternionFromRadians(float roll, float pitch, float yaw)
 {
 	using namespace argos;
 	CQuaternion ret;
@@ -53,6 +54,24 @@ inline argos::CQuaternion quaternionFromDegrees(float roll, float pitch, float y
 	CRadians y{yaw};
 	ret.FromEulerAngles(y, p, r);
 	return ret;
+}
+
+/**
+ * Return a rotated ARGoS vector
+ */
+static inline argos::CVector3 rotateARGoSVector(const argos::CVector3& vec, const argos::CQuaternion& rot)
+{
+	argos::CVector3 t = vec;
+	t.Rotate(rot);
+	return t;
+}
+
+/**
+ * Combine 2 quaternions
+ */
+static inline argos::CQuaternion combineARGoSQuaternions(const argos::CQuaternion& first, const argos::CQuaternion& second)
+{
+	return first * second;
 }
 
 #endif //ARGOS3_BULLET_NUMERICALHELPERS_H

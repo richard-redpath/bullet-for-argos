@@ -11,7 +11,7 @@
 /**
  * Constructor which takes all possible parameters and simply initialises the motor descriptor
  */
-CMotorActuatorEntity::CMotorActuatorEntity(const std::string iId, CMultibodyLinkEntity* parent,
+CMotorActuatorEntity::CMotorActuatorEntity(const std::string iId, const std::string iName, CMultibodyLinkEntity* parent,
 										   CMultibodyLinkEntity* child,
 										   const CVector3 &position, const CQuaternion &orientation, CVector3 axis,
 										   float iVelocityMaxForward, float iEffortMax, float iVelocityMaxReverse,
@@ -19,8 +19,8 @@ CMotorActuatorEntity::CMotorActuatorEntity(const std::string iId, CMultibodyLink
 										   float iInputMax,
 										   float iLimitMin, float iLimitMax)
 		: CSimulatedActuator(),
-		  CComposableEntity(parent),
-		  id(iId),
+		  CComposableEntity(parent, iId),
+		  name(iName),
 		  limitMin(iLimitMin), limitMax(iLimitMax),
 		  velocityMaxForward(iVelocityMaxForward),
 		  velocityMaxReverse(isnan(iVelocityMaxReverse) ? -iVelocityMaxForward : makeNegative(iVelocityMaxReverse)),
@@ -34,6 +34,7 @@ CMotorActuatorEntity::CMotorActuatorEntity(const std::string iId, CMultibodyLink
 		  position(position), orientation(orientation),
 		  axis(axis)
 {
+	std::cout<<"New motor with ID = "<<GetId()<<std::endl;
 }
 
 /**
@@ -83,23 +84,15 @@ void CMotorActuatorEntity::UpdateChildPosition()
 	CQuaternion globalOrientation = combineARGoSQuaternions(parentOrientation, orientation);
 
 	// Where will the child be as a result of the rotating motor?
-	CQuaternion childOrientation = CQuaternion{CRadians{positionCurrent}, axis};
+	CQuaternion childOrientation = combineARGoSQuaternions(globalOrientation, CQuaternion{CRadians{positionCurrent}, axis});
 
 	// Set the child location
 	auto& childOriginAnchor = child->GetEmbodiedEntity().GetOriginAnchor();
 	childOriginAnchor.Position = globalPosition;
-	childOriginAnchor.Orientation = globalOrientation;
+	childOriginAnchor.Orientation = childOrientation;
 
 	// Tell the child to update any of its children
 	child->UpdateChildPosition();
-}
-
-/**
- * Get the id of this robot
- */
-std::string CMotorActuatorEntity::GetID()
-{
-    return id;
 }
 
 /**
@@ -161,7 +154,7 @@ int LUA_getCurrentVelocity(lua_State *state)
 void CMotorActuatorEntity::CreateLuaState(lua_State *state)
 {
 	// Add this motor to the robot state table
-	CLuaUtility::OpenRobotStateTable(state, id);
+	CLuaUtility::OpenRobotStateTable(state, name);
 
 	// Add a reference to this object
 	CLuaUtility::AddToTable(state, "_instance", this);

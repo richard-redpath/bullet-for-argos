@@ -28,7 +28,7 @@ public:
 	/**
 	 * Default constructor which sets default values. Should probably never be called.
 	 */
-	CMotorActuatorEntity() : CMotorActuatorEntity("", nullptr, nullptr,
+	CMotorActuatorEntity() : CMotorActuatorEntity("", "", nullptr, nullptr,
 												      CVector3{0,0,0}, CQuaternion{CRadians{0}, CVector3::X},
 												      CVector3{0,1,0},
                                                       10, 10, 10, 0, 0, -1, 1)
@@ -37,7 +37,7 @@ public:
 	/**
 	 * Main constructor which takes all supported properties of the motor and provides reasonable defaults
 	 */
-	CMotorActuatorEntity(const std::string iId, CMultibodyLinkEntity* parent, CMultibodyLinkEntity* child,
+	CMotorActuatorEntity(const std::string iId, const std::string iName, CMultibodyLinkEntity* parent, CMultibodyLinkEntity* child,
 						 const CVector3 &position, const CQuaternion &orientation,
 						 CVector3 axis = CVector3{0, 1, 0},
 						 float iVelocityMaxForward = NaN, float iEffortMax = NaN,
@@ -53,8 +53,6 @@ public:
 
 	CMultibodyLinkEntity* getParentEntity() { return parent; }
 	CMultibodyLinkEntity* getChildEntity() { return child; }
-
-    std::string GetID();
 
 	virtual void SetRobot(CComposableEntity &entity);
 
@@ -80,7 +78,7 @@ public:
 #endif
 
 private:
-	std::string id;
+	std::string name;
 	float limitMin, limitMax;
 	float velocityMaxForward, velocityMaxReverse;
 	float inputMin, inputMax;

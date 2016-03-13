@@ -51,7 +51,7 @@ bool MeshInfo::LoadFromFile(std::string sourceFile)
 		// Clear the renderer texture ID, we are about to load new data
 		loadedMat->renderId = 0;
 
-//		stbi_set_flip_vertically_on_load(1);
+		stbi_set_flip_vertically_on_load(1);
 		// Load the new image file into an unsigned char array using stb_image
 		auto data = stbi_load((dir + filename).c_str(), &width, &height, &components, 4);
 

@@ -58,12 +58,22 @@ void CBulletMotorModel::AddToEngine(CBulletEngine &engine)
     btRigidBody* parentBody = engine.GetPhysicsModel(parentEntity->GetId())->GetRigidBody();
     btRigidBody* childBody = engine.GetPhysicsModel(childEntity->GetId())->GetRigidBody();
 
+	engine.GetPhysicsModel(parentEntity->GetId())->UpdateFromEntityStatus();
+	engine.GetPhysicsModel(childEntity->GetId())->UpdateFromEntityStatus();
+
+	CVector3 vt;
+	CQuaternion qt;
+
+	bulletTransformToARGoS(parentBody->getWorldTransform(), vt, qt);
+
+	bulletTransformToARGoS(childBody->getWorldTransform(), vt, qt);
+
 	// Get the transform of where/how the motor is "mounted"
     btTransform parentTransform = bulletTransformFromARGoS(entity->GetPosition(), entity->GetOrientation());
-    btTransform childTransform = btTransform{btQuaternion{0,0,0}, btVector3{0,0,0}};
+	btTransform childTransform = btTransform{btQuaternion{0,0,0}, btVector3{0,0,0}};
 
 	// Create the constraint
-    motor = new btHingeConstraint{*parentBody, *childBody, parentTransform, childTransform};
+    motor = new btHingeConstraint{*parentBody, *childBody, parentTransform, childTransform, false};
 
 	// Initialise to a speed of 0
 	motor->enableAngularMotor(true, 0, entity->GetEffortMax());
@@ -73,6 +83,8 @@ void CBulletMotorModel::AddToEngine(CBulletEngine &engine)
 
 	// Set the axis
 	btVector3 btAxis{(float)axis.GetX(), (float)axis.GetY(), (float)axis.GetZ()};
+	btQuaternion q = parentTransform.getRotation();
+	btAxis = btAxis.rotate(q.getAxis(), q.getAngle());
 	motor->setAxis(btAxis);
 //	motor->enableMotor(true);
 

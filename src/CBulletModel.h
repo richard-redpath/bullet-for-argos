@@ -5,6 +5,8 @@
 #ifndef ARGOS3_BULLET_CBULLETMODEL_H
 #define ARGOS3_BULLET_CBULLETMODEL_H
 
+#include "NumericalHelpers.h"
+
 class CBulletEngine;
 
 #include <argos3/core/simulator/physics_engine/physics_model.h>
@@ -72,24 +74,6 @@ static inline void bulletTransformToARGoS(const btTransform& transform, CVector3
 	btQuaternion rot = transform.getRotation();
 	locationOut.Set(loc.getX(), loc.getY(), loc.getZ());
 	orientationOut = CQuaternion(rot.getW(), rot.getX(), rot.getY(), rot.getZ());
-}
-
-/**
- * Return a rotated ARGoS vector
- */
-static inline CVector3 rotateARGoSVector(const CVector3& vec, const CQuaternion& rot)
-{
-	CVector3 t = vec;
-	t.Rotate(rot);
-	return t;
-}
-
-/**
- * Combine 2 quaternions
- */
-static inline CQuaternion combineARGoSQuaternions(const CQuaternion& first, const CQuaternion& second)
-{
-	return second * first;
 }
 
 #endif //ARGOS3_BULLET_CBULLETMODEL_H

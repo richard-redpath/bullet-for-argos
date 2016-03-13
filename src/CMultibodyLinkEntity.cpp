@@ -6,7 +6,7 @@
 #include "CMultibodyEntity.h"
 
 CMultibodyLinkEntity::CMultibodyLinkEntity(CMultibodyEntity* parent, const Link &linkDef)
-	: CComposableEntity(parent, linkDef.name), defaultState(linkDef), currentState(linkDef)
+	: CComposableEntity(parent, parent->GetId() + "_" + linkDef.name), defaultState(linkDef), currentState(linkDef)
 {
 	// Get our orientation relative to our parent
 	CRadians roll{linkDef.roll};
@@ -21,14 +21,14 @@ CMultibodyLinkEntity::CMultibodyLinkEntity(CMultibodyEntity* parent, const Link 
 	CVector3 pos{linkDef.originX, linkDef.originY, linkDef.originZ};
 
 	// Create our embodied entity
-	embodiedEntity = new CEmbodiedEntity{this, linkDef.name, pos, orientation};
+	embodiedEntity = new CEmbodiedEntity{this, GetId(), pos, orientation};
 	embodiedEntity->SetEnabled(true);
 	embodiedEntity->SetMovable(true);
 
 	// And add the embodied component
 	AddComponent(*embodiedEntity);
 
-	UpdateComponents();
+	Reset();
 }
 
 /**
@@ -39,7 +39,10 @@ void CMultibodyLinkEntity::Reset()
 	// Call through to our super reset method
 	CComposableEntity::Reset();
 
-	// Restor our state
+	// And reset
+	embodiedEntity->Reset();
+
+	// Restore our state
 	currentState = defaultState;
 
 	// Get our reset position (relative to our parent)
@@ -58,8 +61,6 @@ void CMultibodyLinkEntity::Reset()
 	embodiedEntity->GetOriginAnchor().Position = pos;
 	embodiedEntity->GetOriginAnchor().Orientation = orientation;
 
-	// And reset
-	embodiedEntity->Reset();
 	UpdateComponents();
 }
 

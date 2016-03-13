@@ -51,11 +51,8 @@ void CBulletEngine::Init(TConfigurationNode &t_tree)
 {
 	CPhysicsEngine::Init(t_tree);
 
-	// If an internal timestep is provided then use it, otherwise use 1ms
-	t_tree.GetAttributeOrDefault("internalTick", &internalTimeStep, 1. / 1000.);
-
-	// Determine how many internal ticks are required per update
-	maxTicks = (int) ceil(GetSimulationClockTick() / internalTimeStep) + 2;
+	maxTicks = GetIterations();
+	internalTimeStep = GetSimulationClockTick()/maxTicks;
 }
 
 /**
@@ -125,6 +122,10 @@ void CBulletEngine::AddPhysicsModel(const std::string &entityId, CBulletModel &m
 
 	// And let the object add itself
 	model.AddToEngine(*this);
+
+	std::cout<<"Added model with id "<<entityId<<" and model "<<&model<<std::endl<<"New contents is:"<<std::endl;
+	for(auto& pair : entityMap)
+		std::cout<<"\tName: "<<pair.first<<" Entity: "<<pair.second<<std::endl;
 }
 
 /**

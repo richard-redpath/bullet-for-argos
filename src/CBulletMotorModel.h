@@ -26,6 +26,8 @@ public:
 
 	virtual void AddToEngine(CBulletEngine& engine);
 
+	CMotorActuatorEntity* GetEntity() { return  entity; }
+
 private:
     btHingeConstraint* motor;
     CBulletEngine* engine;
