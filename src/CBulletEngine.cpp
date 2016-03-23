@@ -122,10 +122,6 @@ void CBulletEngine::AddPhysicsModel(const std::string &entityId, CBulletModel &m
 
 	// And let the object add itself
 	model.AddToEngine(*this);
-
-	std::cout<<"Added model with id "<<entityId<<" and model "<<&model<<std::endl<<"New contents is:"<<std::endl;
-	for(auto& pair : entityMap)
-		std::cout<<"\tName: "<<pair.first<<" Entity: "<<pair.second<<std::endl;
 }
 
 /**

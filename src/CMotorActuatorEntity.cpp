@@ -34,7 +34,6 @@ CMotorActuatorEntity::CMotorActuatorEntity(const std::string iId, const std::str
 		  position(position), orientation(orientation),
 		  axis(axis)
 {
-	std::cout<<"New motor with ID = "<<GetId()<<std::endl;
 }
 
 /**
