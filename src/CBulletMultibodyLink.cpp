@@ -114,8 +114,23 @@ void CBulletMultibodyLink::addBoxToCollisionShape(btCompoundShape *pShape, Geome
  * Add a cylinder to the collision shape
  */
 void CBulletMultibodyLink::addCylinderToCollisionShape(btCompoundShape *pShape, GeometrySpecification& spec) {
-	// Build the cylinder model
-    btCollisionShape* shape = new btCylinderShapeZ{btVector3{spec.cylinder.radius, spec.cylinder.radius, 0.5f * spec.cylinder.length}};
+    // Extract the required properties
+    float radius = spec.cylinder.radius;
+    float length = spec.cylinder.length;
+
+    // Create an empty shape
+    btConvexHullShape* shape = new btConvexHullShape{};
+
+    // Bottom
+    for(int i = 0; i < 360; ++i)
+        shape->addPoint(btVector3{sin(i/(2*M_PI)) * radius, cos(i/(2*M_PI)) * radius, 0}, false);
+
+    // Top
+    for(int i = 0; i < 360; ++i)
+        shape->addPoint(btVector3{sin(i/(2*M_PI)) * radius, cos(i/(2*M_PI)) * radius, length}, false);
+
+    // Disabled this when adding points for efficiency, do it now
+    shape->recalcLocalAabb();
 
 	// And add it
 	addShapeToCompound(pShape, shape, spec);
