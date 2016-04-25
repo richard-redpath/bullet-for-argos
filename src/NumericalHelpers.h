@@ -6,6 +6,7 @@
 #define ARGOS3_BULLET_NUMERICALHELPERS_H
 
 #include <limits>
+#include <cmath>
 #include <argos3/core/utility/math/quaternion.h>
 #include <argos3/core/utility/math/vector3.h>
 
