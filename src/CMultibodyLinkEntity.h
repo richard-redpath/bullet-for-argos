@@ -6,6 +6,7 @@
 #define ARGOS3_BULLET_CURDFLINKENTITY_H
 
 #include <argos3/core/simulator/entity/composable_entity.h>
+#include "NumericalHelpers.h"
 #include "MultibodyDefinitions.h"
 #include "CMultibodyEntity.h"
 #include "CMotorActuatorEntity.h"

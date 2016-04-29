@@ -368,9 +368,17 @@ void MultibodyDefinition::addJoint(Element *element, MaterialPrototypeStack& mat
 		// Provide default values where necessary
 		extractFromString(limitElement->GetAttributeOrDefault("lower", "0"), joint.limitLower);
 		extractFromString(limitElement->GetAttributeOrDefault("upper", "0"), joint.limitUpper);
-		extractFromString(limitElement->GetAttributeOrDefault("effort", "100"), joint.limitEffort);
+		extractFromString(limitElement->GetAttributeOrDefault("effort", "1"), joint.limitEffort);
 		extractFromString(limitElement->GetAttribute("velocity"), joint.limitVelocity);
 	}
+	else
+	  {
+	    // Picked completely arbitrarily
+	    joint.limitLower = 0;
+	    joint.limitUpper = 0;
+	    joint.limitEffort = 1;
+	    joint.limitVelocity = 1;
+	  }
 
 	// Error when an unsupported joint type is requested
 	switch(joint.type)

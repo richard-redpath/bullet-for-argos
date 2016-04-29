@@ -18,7 +18,7 @@ CLinearActuatorEntity::CLinearActuatorEntity(CComposableEntity* parent, CComposa
 		  id(iId),
 		  limitMin(iLimitMin), limitMax(iLimitMax),
 		  velocityMaxForward(iVelocityMaxForward),
-		  velocityMaxReverse(isnan(iVelocityMaxReverse) ? -iVelocityMaxForward : makeNegative(iVelocityMaxReverse)),
+		  velocityMaxReverse(std::isnan(iVelocityMaxReverse) ? -iVelocityMaxForward : makeNegative(iVelocityMaxReverse)),
 		  inputMin(iInputMin), inputMax(iInputMax),
 		  dynamicsDamping(iDynamicsDamping), dynamicsFriction(iDynamicsFriction),
 		  effortMax(iEffortMax),

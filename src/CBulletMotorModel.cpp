@@ -77,7 +77,7 @@ void CBulletMotorModel::AddToEngine(CBulletEngine &engine)
 
 	// Initialise to a speed of 0
 	motor->enableAngularMotor(true, 0, entity->GetEffortMax());
-
+	std::cout<<"Max effort is "<<entity->GetEffortMax()<<std::endl;
 	// What axis should it rotate about?
 	CVector3 axis = entity->GetAxis();
 

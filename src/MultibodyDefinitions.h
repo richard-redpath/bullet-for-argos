@@ -130,34 +130,34 @@ public:
 		if(proto)
 		{
 			// If so then we only override what we have an inherit the rest
-			material.mean.dampening = (isnan(material.mean.dampening) ? proto->mean.dampening : material.mean.dampening);
-			material.mean.friction = (isnan(material.mean.friction) ? proto->mean.friction : material.mean.friction);
-			material.mean.stiffness = (isnan(material.mean.stiffness) ? proto->mean.stiffness : material.mean.stiffness);
+			material.mean.dampening = (std::isnan(material.mean.dampening) ? proto->mean.dampening : material.mean.dampening);
+			material.mean.friction = (std::isnan(material.mean.friction) ? proto->mean.friction : material.mean.friction);
+			material.mean.stiffness = (std::isnan(material.mean.stiffness) ? proto->mean.stiffness : material.mean.stiffness);
 
-			material.std_dev.dampening = (isnan(material.std_dev.dampening) ? proto->std_dev.dampening : material.std_dev.dampening);
-			material.std_dev.friction = (isnan(material.std_dev.friction) ? proto->std_dev.friction : material.std_dev.friction);
-			material.std_dev.stiffness = (isnan(material.std_dev.stiffness) ? proto->std_dev.stiffness : material.std_dev.stiffness);
+			material.std_dev.dampening = (std::isnan(material.std_dev.dampening) ? proto->std_dev.dampening : material.std_dev.dampening);
+			material.std_dev.friction = (std::isnan(material.std_dev.friction) ? proto->std_dev.friction : material.std_dev.friction);
+			material.std_dev.stiffness = (std::isnan(material.std_dev.stiffness) ? proto->std_dev.stiffness : material.std_dev.stiffness);
 
-			material.colour.alpha = (isnan(material.colour.alpha) ? proto->colour.alpha : material.colour.alpha);
-			material.colour.red = (isnan(material.colour.red) ? proto->colour.red : material.colour.red);
-			material.colour.green = (isnan(material.colour.green) ? proto->colour.green : material.colour.green);
-			material.colour.blue = (isnan(material.colour.blue) ? proto->colour.blue : material.colour.blue);
+			material.colour.alpha = (std::isnan(material.colour.alpha) ? proto->colour.alpha : material.colour.alpha);
+			material.colour.red = (std::isnan(material.colour.red) ? proto->colour.red : material.colour.red);
+			material.colour.green = (std::isnan(material.colour.green) ? proto->colour.green : material.colour.green);
+			material.colour.blue = (std::isnan(material.colour.blue) ? proto->colour.blue : material.colour.blue);
 		}
 		else
 		{
 			// If this is the first time this material has been defined then use sensible defaults
-			if(isnan(material.mean.friction)) material.mean.friction = 0.5;
-			if(isnan(material.mean.stiffness)) material.mean.stiffness = 0.5;
-			if(isnan(material.mean.dampening)) material.mean.dampening = 0.5;
+			if(std::isnan(material.mean.friction)) material.mean.friction = 0.5;
+			if(std::isnan(material.mean.stiffness)) material.mean.stiffness = 0.5;
+			if(std::isnan(material.mean.dampening)) material.mean.dampening = 0.5;
 
-			if(isnan(material.std_dev.friction)) material.std_dev.friction = 0;
-			if(isnan(material.std_dev.stiffness)) material.std_dev.stiffness = 0;
-			if(isnan(material.std_dev.dampening)) material.std_dev.dampening = 0;
+			if(std::isnan(material.std_dev.friction)) material.std_dev.friction = 0;
+			if(std::isnan(material.std_dev.stiffness)) material.std_dev.stiffness = 0;
+			if(std::isnan(material.std_dev.dampening)) material.std_dev.dampening = 0;
 
-			if(isnan(material.colour.red)) material.colour.red = 0.5;
-			if(isnan(material.colour.green)) material.colour.green = 0.5;
-			if(isnan(material.colour.blue)) material.colour.blue = 0.5;
-			if(isnan(material.colour.alpha)) material.colour.alpha = 0.5;
+			if(std::isnan(material.colour.red)) material.colour.red = 0.5;
+			if(std::isnan(material.colour.green)) material.colour.green = 0.5;
+			if(std::isnan(material.colour.blue)) material.colour.blue = 0.5;
+			if(std::isnan(material.colour.alpha)) material.colour.alpha = 0.5;
 		}
 		materialStack.back()[name] = material;
 	}

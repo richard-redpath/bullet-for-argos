@@ -113,6 +113,7 @@ void CMultibodyEntity::Init(TConfigurationNode &t_tree)
 		auto name = mot.first;
 
         auto motor = new CMotorActuatorEntity{GetId() + "-" + name, name, parent, child, position, orientation, axis, def.limitVelocity, def.limitEffort, -def.limitVelocity};
+	std::cout<<"New motor entity created. Effort is "<<def.limitEffort<<std::endl;
 		motor->SetEnabled(true);
 		joints[name] = motor;
 

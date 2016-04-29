@@ -5,9 +5,11 @@
 #include <BulletCollision/Gimpact/btGImpactShape.h>
 #include "CBulletMultibodyLink.h"
 
+#define COLLISION_MARGIN (0.0001f)
+
 bool propertiesSet(const MaterialInstance& instance)
 {
-    return (!isnan(instance.properties.dampening) && !isnan(instance.properties.friction));
+    return (!std::isnan(instance.properties.dampening) && !std::isnan(instance.properties.friction));
 }
 
 /**
@@ -123,15 +125,21 @@ void CBulletMultibodyLink::addCylinderToCollisionShape(btCompoundShape *pShape, 
 
     // Bottom
     for(int i = 0; i < 360; ++i)
-        shape->addPoint(btVector3{sin(i/(2*M_PI)) * radius, cos(i/(2*M_PI)) * radius, 0}, false);
+      shape->addPoint(btVector3{(btScalar)(sin(i/(2*M_PI)) * radius), (btScalar)(cos(i/(2*M_PI)) * radius), 0}, false);
 
     // Top
     for(int i = 0; i < 360; ++i)
-        shape->addPoint(btVector3{sin(i/(2*M_PI)) * radius, cos(i/(2*M_PI)) * radius, length}, false);
+      shape->addPoint(btVector3{(btScalar)(sin(i/(2*M_PI)) * radius), (btScalar)(cos(i/(2*M_PI)) * radius), length}, false);
 
     // Disabled this when adding points for efficiency, do it now
     shape->recalcLocalAabb();
+    
 
+    //    btCollisionShape* shape = new btCylinderShape{btVector3{spec.cylinder.radius, spec.cylinder.radius, 0.5f * spec.cylinder.length}};//, spec.cylinder.radius}};
+    
+    // Minimise the collision margin
+    shape->setMargin(COLLISION_MARGIN);
+    
 	// And add it
 	addShapeToCompound(pShape, shape, spec);
 }
@@ -173,6 +181,7 @@ void CBulletMultibodyLink::addMeshToCollisionShape(btCompoundShape *pShape, Geom
 		// Set its scale factor and update its bounds
         shape->setLocalScaling(btVector3{1, 1, 1});
         shape->updateBound();
+	shape->setMargin(COLLISION_MARGIN);
 
 		// Add the sub-shape to the mesh with not transformation
         meshShape->addChildShape(btTransform{btQuaternion{0,0,0}, btVector3{0, 0, 0}}, shape);
@@ -180,7 +189,8 @@ void CBulletMultibodyLink::addMeshToCollisionShape(btCompoundShape *pShape, Geom
 
 	// Scale the mesh by the specified amount
 	meshShape->setLocalScaling(btVector3{spec.mesh.sx, spec.mesh.sy, spec.mesh.sz});
-
+	meshShape->setMargin(COLLISION_MARGIN);
+	
 	// And add it to the main compound shape
 	addShapeToCompound(pShape, meshShape, spec);
 }

@@ -40,8 +40,8 @@ public:
 	CMotorActuatorEntity(const std::string iId, const std::string iName, CMultibodyLinkEntity* parent, CMultibodyLinkEntity* child,
 						 const CVector3 &position, const CQuaternion &orientation,
 						 CVector3 axis = CVector3{0, 1, 0},
-						 float iVelocityMaxForward = NaN, float iEffortMax = NaN,
-						 float iVelocityMaxReverse = NaN, float iDynamicsDamping = 0,
+						 float iVelocityMaxForward = 10, float iEffortMax = 10,
+						 float iVelocityMaxReverse = -10, float iDynamicsDamping = 0,
 						 float iDynamicsFriction = 0, float iInputMin = -1, float iInputMax = 1,
 						 float iLimitMin = nInf, float iLimitMax = pInf);
 
