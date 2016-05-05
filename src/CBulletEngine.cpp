@@ -100,7 +100,7 @@ size_t CBulletEngine::GetNumPhysicsModels()
  */
 bool CBulletEngine::AddEntity(CEntity &entity)
 {
-	CallEntityOperation<BulletOperationAddEntity, CBulletEngine, SOperationOutcome>(*this, entity);
+	return CallEntityOperation<BulletOperationAddEntity, CBulletEngine, SOperationOutcome>(*this, entity).Value;
 }
 
 /**
@@ -108,7 +108,7 @@ bool CBulletEngine::AddEntity(CEntity &entity)
  */
 bool CBulletEngine::RemoveEntity(CEntity &entity)
 {
-	CallEntityOperation<BulletOperationRemoveEntity, CBulletEngine, SOperationOutcome>(*this, entity);
+	return CallEntityOperation<BulletOperationRemoveEntity, CBulletEngine, SOperationOutcome>(*this, entity).Value;
 }
 
 /**

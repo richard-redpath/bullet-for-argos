@@ -110,7 +110,6 @@ void CMotorActuatorEntity::SetEnabled(bool enabled)
  */
 int LUA_setTargetVelocity(lua_State *state)
 {
-  std::cout<<"Set velocity called"<<std::endl;
 	// Check the parameter count is correct
 	if(lua_gettop(state) != 1)
 		return luaL_error(state, "setTargetVelocity expects 1 argument");
@@ -121,8 +120,6 @@ int LUA_setTargetVelocity(lua_State *state)
 
 	// Get the motor to change
 	CMotorActuatorEntity* m = LUA_GetCallingInstance<CMotorActuatorEntity>(state);
-	std::cout<<"Motor is "<<m<<std::endl;
-	std::cout<<"Target is "<<target<<std::endl;
 	// Call the set velocity method
 	m->setVelocityTarget(target);
 
@@ -135,7 +132,6 @@ int LUA_setTargetVelocity(lua_State *state)
  */
 int LUA_getCurrentVelocity(lua_State *state)
 {
-  std::cout<<"Get velocity called"<<std::endl;
 	// Check the parameter count is correct
 	if(lua_gettop(state) != 0)
 		return luaL_error(state, "getTargetVelocity expects 0 arguments");
@@ -155,8 +151,6 @@ int LUA_getCurrentVelocity(lua_State *state)
  */
 void CMotorActuatorEntity::CreateLuaState(lua_State *state)
 {
-  std::cout<<"Creating some motor stuff"<<std::endl;
-  std::cout<<"Motor name is "<<name<<std::endl;
 	// Add this motor to the robot state table
 	CLuaUtility::OpenRobotStateTable(state, name);
 
