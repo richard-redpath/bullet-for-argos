@@ -17,7 +17,7 @@ CBulletCubeModel::CBulletCubeModel(CBulletEngine& engine, CBoxEntity& entity)
 	this->engine = &engine;
 
 	// Bullet requires boxes to be initialised with half side lengths
-	CVector3 dims = entity.GetSize() * 0.5;
+	CVector3 dims = entity.GetSize() * 0.5 * engine.worldScale;
 	collisionShape = new btBoxShape{btVector3{(btScalar)dims.GetX(), (btScalar)dims.GetY(), (btScalar)dims.GetZ()}};
 
 	// Setup the location of the box in bullet compensating for the difference between ARGoS and Bullet coordinate origins
@@ -75,7 +75,7 @@ void CBulletCubeModel::UpdateFromEntityStatus()
 {
 	position = entity->GetEmbodiedEntity().GetOriginAnchor().Position + rotateARGoSVector(positionOffset, orientation);
 	orientation = entity->GetEmbodiedEntity().GetOriginAnchor().Orientation;
-	rigidBody->setWorldTransform(bulletTransformFromARGoS(position, orientation));
+	rigidBody->setWorldTransform(bulletTransformFromARGoS(position*engine->worldScale, orientation));
 }
 
 /**
@@ -84,6 +84,7 @@ void CBulletCubeModel::UpdateFromEntityStatus()
 void CBulletCubeModel::UpdateEntityStatus()
 {
 	bulletTransformToARGoS(rigidBody->getWorldTransform(), position, orientation);
+	position *= engine->inverseWorldScale;
 	entity->GetEmbodiedEntity().GetOriginAnchor().Position = position - rotateARGoSVector(positionOffset, orientation);
 	entity->GetEmbodiedEntity().GetOriginAnchor().Orientation = orientation;
 }

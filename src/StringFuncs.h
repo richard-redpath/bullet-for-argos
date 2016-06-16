@@ -13,7 +13,7 @@
  * Used here primarily to extract numeric values from XML attributes
  */
 template<typename T>
-void extractFromStringStream(std::stringstream* ss, T &a)
+inline void extractFromStringStream(std::stringstream* ss, T &a)
 {
 	// Extract the final value we are interested in
 	(*ss) >> a;
@@ -24,7 +24,7 @@ void extractFromStringStream(std::stringstream* ss, T &a)
  * This one is for float as a final argument
  */
 template<>
-void extractFromStringStream<float>(std::stringstream* ss, float &a)
+inline void extractFromStringStream<float>(std::stringstream* ss, float &a)
 {
 	// Extract as a string
 	std::string tmp;
@@ -41,7 +41,7 @@ void extractFromStringStream<float>(std::stringstream* ss, float &a)
  * As above for floats in the middle of argument lists
  */
 template<typename T, typename... S>
-void extractFromStringStream(std::stringstream* ss, float &a, S&... args)
+inline void extractFromStringStream(std::stringstream* ss, float &a, S&... args)
 {
 	std::string tmp;
 	(*ss)>>tmp;
@@ -57,7 +57,7 @@ void extractFromStringStream(std::stringstream* ss, float &a, S&... args)
  * to get the remaining values
  */
 template<typename T, typename... S>
-void extractFromStringStream(std::stringstream* ss, T &a, S&... args)
+inline void extractFromStringStream(std::stringstream* ss, T &a, S&... args)
 {
 	(*ss) >> a;
 	extractFromStringStream(ss, args...);
@@ -67,7 +67,7 @@ void extractFromStringStream(std::stringstream* ss, T &a, S&... args)
  * This is the one which will most likely be invoked
  */
 template<typename... T>
-void extractFromString(std::string str, T &... args)
+inline void extractFromString(std::string str, T &... args)
 {
 	std::stringstream ss{str};
 	extractFromStringStream(&ss, args...);
@@ -76,7 +76,7 @@ void extractFromString(std::string str, T &... args)
 /**
  * Returns true iff the first string ends with the second
  */
-bool endsWith(const std::string& mainString, const std::string& end)
+inline bool endsWith(const std::string& mainString, const std::string& end)
 {
 	int mainLength = mainString.length();
 	int endLength = end.length();

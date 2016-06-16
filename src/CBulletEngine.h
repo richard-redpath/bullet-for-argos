@@ -28,7 +28,7 @@ private:
 	btBroadphaseInterface* overlappingPairCache;					// detection components
 	btSequentialImpulseConstraintSolver* solver;					//
 
-	btDiscreteDynamicsWorld* dynamicsWorld;							// Our world
+	btDynamicsWorld* dynamicsWorld;							// Our world
 
 	btScalar internalTimeStep;										// The time step used internally between ticks
 
@@ -37,9 +37,13 @@ private:
 
 	std::vector<CBulletModel*> entities;							// All entities this engine handles
 
-	int maxTicks{50};												// The most subticks we will ever do in one update
+	int maxTicks{50};
 
-public:
+public:								// The most subticks we will ever do in one update
+	float worldScale;
+	float worldScaleSquared;
+	float inverseWorldScale;
+	float inverseWorldScaleSquared;
 	CBulletEngine();
 	virtual ~CBulletEngine();
 

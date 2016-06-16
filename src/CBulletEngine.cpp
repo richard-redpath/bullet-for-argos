@@ -4,6 +4,7 @@
 
 #include "CBulletEngine.h"
 #include "NumericalHelpers.h"
+#include "StringFuncs.h"
 
 #include "BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h"
 
@@ -23,6 +24,14 @@ CBulletEngine::CBulletEngine()
 	dynamicsWorld = new btDiscreteDynamicsWorld {collisionDispatcher, overlappingPairCache, solver,
 												 collisionConfiguration};
 
+	btStaticPlaneShape* groundShape = new btStaticPlaneShape{btVector3{0, 0, 1}, 0};
+	btRigidBody* groundBody = new btRigidBody{0, new btDefaultMotionState, groundShape};
+	groundBody->setActivationState(DISABLE_DEACTIVATION);
+	groundBody->setFriction(0.8);
+	groundBody->setRestitution(0.8);
+
+	dynamicsWorld->addRigidBody(groundBody, GetObjectGroup(true), GetObjectCollisionFlags(true));
+	
 	// Gravity in Z
 	dynamicsWorld->setGravity(btVector3{0, 0, -9.81f});
 }
@@ -53,6 +62,14 @@ void CBulletEngine::Init(TConfigurationNode &t_tree)
 
 	maxTicks = GetIterations();
 	internalTimeStep = GetSimulationClockTick()/maxTicks;
+
+	extractFromString(t_tree.GetAttributeOrDefault("world_scale", "1"), worldScale);
+	worldScaleSquared = worldScale*worldScale;
+	inverseWorldScale = 1/worldScale;
+	inverseWorldScaleSquared = 1/worldScaleSquared;
+	dynamicsWorld->setGravity(btVector3{0, 0, -9.81}*worldScale);
+
+	std::cout<<"World scale = "<<worldScale<<"  Squared = "<<worldScaleSquared<<std::endl;
 }
 
 /**

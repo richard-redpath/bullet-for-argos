@@ -24,7 +24,7 @@ CBulletModel::CBulletModel(CBulletEngine& engine, CEmbodiedEntity& entity)
 		return;
 
 	// Extract initial position and orientation
-	initPosition = GetEmbodiedEntity().GetOriginAnchor().Position;
+	initPosition = GetEmbodiedEntity().GetOriginAnchor().Position*engine.worldScale;
 	initOrientation = GetEmbodiedEntity().GetOriginAnchor().Orientation;
 	position = initPosition;
 	orientation = initOrientation;
@@ -38,8 +38,8 @@ CBulletModel::CBulletModel(CBulletEngine& engine, CEmbodiedEntity& entity)
  */
 void CBulletModel::UpdateOriginAnchor(SAnchor &anchor)
 {
-	anchor.Position = position;
-	anchor.Orientation = orientation;
+  anchor.Position = position/engine->worldScale;
+  anchor.Orientation = orientation;
 }
 
 /**
@@ -113,12 +113,12 @@ void CBulletModel::Reset()
 {
 	position = initPosition;
 	orientation = initOrientation;
-	velocity = CVector3(0,0,0);
-	acceleration = CVector3(0,0,0);
+	velocity = CVector3{0,0,0};
+	acceleration = CVector3{0,0,0};
 
 	// Clear the bullet values too
-	GetRigidBody()->setAngularVelocity(btVector3(0,0,0));
-	GetRigidBody()->setLinearVelocity(btVector3(0,0,0));
+	GetRigidBody()->setAngularVelocity(btVector3{0,0,0});
+	GetRigidBody()->setLinearVelocity(btVector3{0,0,0});
 
 	// Recalculate where we are
 	CalculateBoundingBox();

@@ -76,12 +76,12 @@ public:
 	 */
 	static MeshInfo& GetMeshInfo(int meshIdx)
 	{
-		return meshes[meshIdx];
+		return *meshes[meshIdx];
 	}
 
 
 private:
-	static std::vector<MeshInfo> meshes;
+	static std::vector<MeshInfo*> meshes;
 	static std::map<std::string, int> meshIndices;
 
 	std::map<std::string, Link> links;

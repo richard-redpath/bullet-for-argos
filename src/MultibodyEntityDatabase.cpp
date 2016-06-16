@@ -565,8 +565,8 @@ void MultibodyDefinition::handleVisualOrCollision(ticpp::Element *definitionElem
 				if(endsWith(meshFileName, ".obj"))
 				{
 					// If we can then we should load it, record its location, and add its definition
-					MeshInfo info;
-					info.LoadFromFile(meshFileName);
+					MeshInfo* info = new MeshInfo;
+					info->LoadFromFile(meshFileName);
 					meshIndices[meshFileName] = (int)meshes.size();
 					meshes.push_back(info);
 				}
@@ -581,7 +581,7 @@ void MultibodyDefinition::handleVisualOrCollision(ticpp::Element *definitionElem
 			}
 
 			//The mesh is now guaranteed to be in memory so get its index
-			spec.mesh.mesh = &(meshes[meshIndices[meshFileName]]);
+			spec.mesh.mesh = meshes[meshIndices[meshFileName]];
 
 			// Extract a scale if one is provided
 			extractFromString(shapeDefinition->GetAttributeOrDefault("scale", "1 1 1"), spec.mesh.sx, spec.mesh.sy,
@@ -636,5 +636,5 @@ void MultibodyDefinition::handleVisualOrCollision(ticpp::Element *definitionElem
 /*
  * Static definitions
  */
-std::vector<MeshInfo> MultibodyDefinition::meshes;
+std::vector<MeshInfo*> MultibodyDefinition::meshes;
 std::map<std::string, int> MultibodyDefinition::meshIndices;

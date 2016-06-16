@@ -3,6 +3,7 @@
 //
 
 #include <tinyobjloader/tiny_obj_loader.h>
+#include <iostream>
 #include "MeshInfo.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -24,19 +25,18 @@ bool MeshInfo::LoadFromFile(std::string sourceFile)
 
 	// Get the directory that this mesh exists in
 	int pathEnd = sourceFile.find_last_of('/');
-	std::string dir = sourceFile.substr(0, pathEnd+1);
+	std::string dir = sourceFile.substr(0, pathEnd + 1);
 
 	// Try to parse the OBJ file
 	std::string err = LoadObj(shapes, mats, sourceFile.c_str(), dir.c_str());
 
 	// Somewhere to store required material definitions
-	MeshTexture* loadedTextures[mats.size()];
+	MeshTexture *loadedTextures[mats.size()];
 
 	// Load all materials
-	for(int i = 0; i < mats.size(); ++i)
-	{
+	for (int i = 0; i < mats.size(); ++i) {
 		// Get the current material
-		auto& mat = mats[i];
+		auto &mat = mats[i];
 
 		// Allocate a new mesh object
 		loadedTextures[i] = new MeshTexture;
@@ -58,50 +58,56 @@ bool MeshInfo::LoadFromFile(std::string sourceFile)
 		// Number of data elements we need to copy
 		int numElements = width * height * 4;
 
-		// Allocate new space to store the image data
-		loadedMat->data = new unsigned char[numElements];    //(unsigned char*)malloc(numElements * sizeof(unsigned char));
+		if (data != nullptr) {
+			// Allocate new space to store the image data
+			loadedMat->data = new unsigned char[numElements];    //(unsigned char*)malloc(numElements * sizeof(unsigned char));
 
-		// Copy the loaded data to our mesh texture's array
-		memcpy(loadedMat->data, data, numElements*sizeof(unsigned char));
+			// Copy the loaded data to our mesh texture's array
+			memcpy(loadedMat->data, data, numElements * sizeof(unsigned char));
 
-		// Set our texture size
-		loadedMat->height = height;
-		loadedMat->width = width;
+			// Set our texture size
+			loadedMat->height = height;
+			loadedMat->width = width;
 
-		// Clear the loaded data
-		free(data);
+			// Clear the loaded data
+			free(data);
+		}
+		else {
+			loadedMat->data = nullptr;
+			loadedMat->height = -1;
+			loadedMat->width = -1;
+		}
 	}
 
 	// Abort if an error has occurred
-	if(!err.empty())
+	if (!err.empty())
 		return false;
 
 	// If no shapes are found then abort
 	unsigned long nShapes = shapes.size();
-	if(nShapes == 0)
+	if (nShapes == 0)
 		return false;
 
 	// Iterate over all bodies
-	for(int i = 0; i < nShapes; ++i)
-	{
+	for (int i = 0; i < nShapes; ++i) {
 		// Get the name and mesh datal
 		auto shapeName = shapes[i].name;
 		auto mesh = shapes[i].mesh;
 
 		// Extract all vertices
-		float* verts = new float[mesh.positions.size()];
+		float *verts = new float[mesh.positions.size()];
 
-		for(int v = 0; v < mesh.positions.size(); ++v)
+		for (int v = 0; v < mesh.positions.size(); ++v)
 			verts[v] = mesh.positions[v];
 
 		// Extract all edges
-		int* indices = new int[mesh.indices.size()];
+		int *indices = new int[mesh.indices.size()];
 
-		for(int ind = 0; ind < mesh.indices.size(); ++ind)
+		for (int ind = 0; ind < mesh.indices.size(); ++ind)
 			indices[ind] = mesh.indices[ind];
 
-		float* uvs = new float[mesh.texcoords.size()];
-		for(int ind = 0; ind < mesh.texcoords.size(); ++ind)
+		float *uvs = new float[mesh.texcoords.size()];
+		for (int ind = 0; ind < mesh.texcoords.size(); ++ind)
 			uvs[ind] = mesh.texcoords[ind];
 
 		vertsMap[shapeName] = verts;
@@ -110,7 +116,7 @@ bool MeshInfo::LoadFromFile(std::string sourceFile)
 		indicesMap[shapeName] = indices;
 		numIndices[shapeName] = mesh.indices.size();
 
-		MeshTexture* t = loadedTextures[mesh.material_ids[0]];
+		MeshTexture *t = loadedTextures[mesh.material_ids[0]];
 		textures[shapeName] = t;
 
 		uvsMap[shapeName] = uvs;

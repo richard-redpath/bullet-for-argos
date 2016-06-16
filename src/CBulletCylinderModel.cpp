@@ -16,7 +16,9 @@ CBulletCylinderModel::CBulletCylinderModel(CBulletEngine &engine, CCylinderEntit
 	this->engine = &engine;
 
 	// Bullet requires boxes to be initialised with half side lengths
-	collisionShape = new btCylinderShapeZ{btVector3{(btScalar)entity.GetRadius(), (btScalar)entity.GetRadius(), (btScalar)entity.GetHeight() * 0.5f}};
+	btVector3 size{(btScalar)entity.GetRadius(), (btScalar)entity.GetRadius(), (btScalar)entity.GetHeight() * 0.5f};
+	size *= engine.worldScale;
+	collisionShape = new btCylinderShapeZ{size};
 
 	// Setup the location of the box in bullet compensating for the difference between ARGoS and Bullet coordinate origins
 	position = entity.GetEmbodiedEntity().GetOriginAnchor().Position;
@@ -46,6 +48,7 @@ CBulletCylinderModel::CBulletCylinderModel(CBulletEngine &engine, CCylinderEntit
 void CBulletCylinderModel::UpdateFromEntityStatus()
 {
 	position = entity->GetEmbodiedEntity().GetOriginAnchor().Position + rotateARGoSVector(positionOffset, orientation);
+	position *= engine->worldScale;
 	orientation = entity->GetEmbodiedEntity().GetOriginAnchor().Orientation;
 	rigidBody->setWorldTransform(bulletTransformFromARGoS(position, orientation));
 }
@@ -55,6 +58,7 @@ void CBulletCylinderModel::UpdateFromEntityStatus()
  */
 void CBulletCylinderModel::UpdateEntityStatus()
 {
+	position /= engine->worldScale;
 	bulletTransformToARGoS(rigidBody->getWorldTransform(), position, orientation);
 	entity->GetEmbodiedEntity().GetOriginAnchor().Position = position - rotateARGoSVector(positionOffset, orientation);
 	entity->GetEmbodiedEntity().GetOriginAnchor().Orientation = orientation;

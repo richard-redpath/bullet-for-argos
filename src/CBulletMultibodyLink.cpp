@@ -164,7 +164,7 @@ void CBulletMultibodyLink::addMeshToCollisionShape(btCompoundShape *pShape, Geom
     btCompoundShape *meshShape = new btCompoundShape;
 
 	// Get the mesh info
-    auto meshInfo = *spec.mesh.mesh;
+    auto& meshInfo = *spec.mesh.mesh;
 
 	// For every sub-shape in the mesh
     for(auto key : meshInfo.keys)
