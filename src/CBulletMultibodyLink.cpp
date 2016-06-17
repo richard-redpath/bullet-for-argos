@@ -181,7 +181,7 @@ void CBulletMultibodyLink::addMeshToCollisionShape(btCompoundShape *pShape, Geom
 		// Set its scale factor and update its bounds
         shape->setLocalScaling(btVector3{1, 1, 1});
         shape->updateBound();
-	shape->setMargin(COLLISION_MARGIN);
+    	shape->setMargin(COLLISION_MARGIN);
 
 		// Add the sub-shape to the mesh with not transformation
         meshShape->addChildShape(btTransform{btQuaternion{0,0,0}, btVector3{0, 0, 0}}, shape);

@@ -116,8 +116,10 @@ bool MeshInfo::LoadFromFile(std::string sourceFile)
 		indicesMap[shapeName] = indices;
 		numIndices[shapeName] = mesh.indices.size();
 
-		MeshTexture *t = loadedTextures[mesh.material_ids[0]];
-		textures[shapeName] = t;
+		if(mesh.material_ids[0] >= 0) {
+			MeshTexture *t = loadedTextures[mesh.material_ids[0]];
+			textures[shapeName] = t;
+		}
 
 		uvsMap[shapeName] = uvs;
 

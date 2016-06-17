@@ -183,7 +183,9 @@ inline void drawMesh(MeshAttributes& mesh)
 		MeshTexture* texture = info->textures[key];
 
 		// If this mesh should have a texture then its "renderId" will be non-zero
-		bool hasTexture = texture->renderId > 0;
+		bool hasTexture = false;
+        if(texture != nullptr)
+            hasTexture = texture->renderId > 0;
 
 		// If it has one then bind it
 		if(hasTexture)
@@ -242,8 +244,13 @@ inline void setupMeshTextures(MeshInfo* mesh)
 	// Setup textures
 	for(auto key : mesh->keys)
 	{
+        if(mesh->textures.find(key) == mesh->textures.end())
+            continue;
+
 		// Key the texture info
 		MeshTexture* texture = mesh->textures[key];
+        if(texture == nullptr)
+            continue;
 
 		// As long as there is image data
 		if (texture->data != nullptr)
