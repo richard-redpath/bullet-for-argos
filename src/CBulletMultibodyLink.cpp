@@ -4,6 +4,7 @@
 
 #include <BulletCollision/Gimpact/btGImpactShape.h>
 #include "CBulletMultibodyLink.h"
+#include <BulletCollision/Gimpact/btCompoundFromGimpact.h>
 
 #define COLLISION_MARGIN (0.0001f)
 
@@ -176,13 +177,20 @@ void CBulletMultibodyLink::addMeshToCollisionShape(btCompoundShape *pShape, Geom
                                                  3 * sizeof(float));
 
 		// Create the collision sub-shape
-        btGImpactMeshShape *shape = new btGImpactMeshShape {vert};
+//        btGImpactMeshShape *shape = new btGImpactMeshShape {vert};
+//	btBvhTriangleMeshShape* shape = new btBvhTriangleMeshShape{vert,false,true};
+	btConvexTriangleMeshShape* shape = new btConvexTriangleMeshShape{vert};
 
 		// Set its scale factor and update its bounds
         shape->setLocalScaling(btVector3{1, 1, 1});
-        shape->updateBound();
+//        shape->updateBound();
     	shape->setMargin(COLLISION_MARGIN);
-
+/*
+	btCompoundShape* newCompound = btCreateCompoundFromGimpactShape(shape, 0);
+        newCompound->setLocalScaling(btVector3{1, 1, 1});
+//        newCompound->updateBound();
+newCompound->setMargin(COLLISION_MARGIN);*/
+	
 		// Add the sub-shape to the mesh with not transformation
         meshShape->addChildShape(btTransform{btQuaternion{0,0,0}, btVector3{0, 0, 0}}, shape);
     }
