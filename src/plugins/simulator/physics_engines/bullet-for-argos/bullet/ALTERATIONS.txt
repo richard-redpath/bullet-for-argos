@@ -1,0 +1,1 @@
+A number of files have been omitted from the official bullet library as they are not used. Notably any files not under the "src" directory of the official repository and the "src/Bullet3OpenCL" directory have been removed.
