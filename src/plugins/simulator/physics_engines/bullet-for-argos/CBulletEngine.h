@@ -56,7 +56,8 @@ public:								// The most subticks we will ever do in one update
 	virtual bool RemoveEntity(CEntity& entity) override;			// is handling updates for
 
 	// First object hit by the provided ray
-	virtual CEmbodiedEntity* CheckIntersectionWithRay(Real& f_t_on_ray, const CRay3 &c_ray) const override;
+	virtual CEmbodiedEntity* CheckIntersectionWithRay(Real& f_t_on_ray, const CRay3 &c_ray) const;
+	virtual void CheckIntersectionWithRay(argos::TEmbodiedEntityIntersectionData& ret, const CRay3 &c_ray) const;
 
 	// Add and remove created models (used by registration macros so may flag as unused by editors)
 	void AddPhysicsModel(const std::string& entityId, CBulletModel& model);
