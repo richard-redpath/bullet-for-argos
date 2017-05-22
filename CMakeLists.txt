@@ -25,6 +25,13 @@ pkg_check_modules(ARGOS REQUIRED argos3_simulator)
 set(ARGOS_PREFIX ${ARGOS_PREFIX} CACHE INTERNAL "")
 link_directories(${ARGOS_LIBRARY_DIRS})
 
+find_package(Qt5 COMPONENTS Widgets Gui)
+add_definitions(${Qt5Widgets_DEFINITIONS} ${Qt5Gui_DEFINITIONS})
+include_directories(${Qt5Widgets_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS})
+
+message(STATUS "Widgets : ${Qt5Widgets_INCLUDE_DIRS}")
+message(STATUS "Gui     : ${Qt5Gui_INCLUDE_DIRS}")
+
 #find_library(ARGOS_LIB_SIM argos3core_simulator /usr/local/lib/argos3)
 #find_library(ARGOS_LIB_VIS argos3plugin_simulator_qtopengl /usr/local/lib/argos3)
 

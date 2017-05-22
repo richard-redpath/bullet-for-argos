@@ -186,6 +186,21 @@ void CBulletEngine::RemovePhysicsModel(const std::string &entityId)
 /**
  * Iterate over all objects checking for collisions and return the first object hit, if any
  */
+void CBulletEngine::CheckIntersectionWithRay(argos::TEmbodiedEntityIntersectionData& ret, const CRay3 &c_ray) const
+{
+	CEmbodiedEntity* closest = nullptr;
+	Real fTOnRay;
+
+	for(auto& it : entityMap)
+	{
+		if(it.second->CheckIntersectionWithRay(fTOnRay, c_ray))
+			ret.push_back(SEmbodiedEntityIntersectionItem{&it.second->GetEmbodiedEntity(), fTOnRay});
+	}
+}
+
+/**
+ * Iterate over all objects checking for collisions and return the first object hit, if any
+ */
 CEmbodiedEntity* CBulletEngine::CheckIntersectionWithRay(Real &f_t_on_ray, const CRay3 &c_ray) const
 {
 	CEmbodiedEntity* closest = nullptr;

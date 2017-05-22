@@ -64,7 +64,7 @@ void CBulletCubeModel::CalculateBoundingBox()
  */
 bool CBulletCubeModel::CheckIntersectionWithRay(Real &f_t_on_ray, const CRay3 &ray) const
 {
-	CBox box{entity->GetSize(), GetEmbodiedEntity().GetOriginAnchor().Position, CVector3::Z};
+	CBox box{entity->GetSize(), GetEmbodiedEntity().GetOriginAnchor().Position, GetEmbodiedEntity().GetOriginAnchor().Orientation};
 	return box.Intersects(f_t_on_ray, ray);
 }
 
