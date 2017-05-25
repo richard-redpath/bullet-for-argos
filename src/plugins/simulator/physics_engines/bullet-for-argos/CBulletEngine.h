@@ -7,12 +7,18 @@
 
 class CBulletModel;
 
-#include "bullet/src/btBulletDynamicsCommon.h"
 #include "CBulletModel.h"
 #include "BulletEntityRegistration.h"
 #include <argos3/core/simulator/physics_engine/physics_engine.h>
 
 using namespace argos;
+
+class btDefaultCollisionConfiguration;
+class btCollisionDispatcher;
+class btBroadphaseInterface;
+class btSequentialImpulseConstraintSolver;
+class btDynamicsWorld;
+class btCollisionShape;
 
 /*
  * An implementation of an ARGoS physics engine which uses the bullet engine underneath
@@ -30,7 +36,7 @@ private:
 
 	btDynamicsWorld* dynamicsWorld;							// Our world
 
-	btScalar internalTimeStep;										// The time step used internally between ticks
+	double internalTimeStep;										// The time step used internally between ticks
 
 	std::vector<btCollisionShape*> collisionShapes;					// All possible colliding objects
 	TMap entityMap;													// Name accessible ARGoS entities in this engine

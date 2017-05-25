@@ -2,10 +2,12 @@
 // Created by rar500 on 12/11/15.
 //
 
+#include "./bullet/src/btBulletDynamicsCommon.h"
 #include <argos3/core/simulator/simulator.h>
 #include "CBulletMotorModel.h"
 #include "CBulletEngine.h"
 
+#include "transform_utils.h"
 /**
  * A simple, continuous motor which rotates about a fixed axis
  */

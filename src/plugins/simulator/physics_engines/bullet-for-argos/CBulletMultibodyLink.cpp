@@ -2,9 +2,14 @@
 // Created by richard on 25/11/15.
 //
 
+#include "./bullet/src/btBulletDynamicsCommon.h"
 #include <BulletCollision/Gimpact/btGImpactShape.h>
 #include "CBulletMultibodyLink.h"
 #include <BulletCollision/Gimpact/btCompoundFromGimpact.h>
+#include "./bullet/src/btBulletDynamicsCommon.h"
+#include "CBulletModel.h"
+
+#include "transform_utils.h"
 
 #define COLLISION_MARGIN (0.0001f)
 

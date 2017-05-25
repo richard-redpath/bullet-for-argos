@@ -2,6 +2,8 @@
 // Created by richard on 17/08/15.
 //
 
+
+#include "./bullet/src/btBulletDynamicsCommon.h"
 #include "CBulletEngine.h"
 #include "NumericalHelpers.h"
 #include "StringFuncs.h"

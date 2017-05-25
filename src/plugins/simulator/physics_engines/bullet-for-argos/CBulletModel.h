@@ -8,6 +8,9 @@
 #include "NumericalHelpers.h"
 
 class CBulletEngine;
+class btRigidBody;
+class btTransform;
+class btMotionState;
 
 #include <argos3/core/simulator/physics_engine/physics_model.h>
 #include <argos3/core/simulator/entity/entity.h>
@@ -59,21 +62,13 @@ public:
  * Create a btTransform from an ARGoS position vector and (optionally) quaternion. If no quaternion is provided then
  * no rotation is assumed.
  */
-static inline btTransform bulletTransformFromARGoS(const CVector3 &vec, const CQuaternion &orientation = CQuaternion(1, 0, 0, 0))
-{
-	return btTransform {btQuaternion{(btScalar)orientation.GetX(), (btScalar)orientation.GetY(), (btScalar)orientation.GetZ(), (btScalar)orientation.GetW()},
-						btVector3{(btScalar)vec.GetX(), (btScalar)vec.GetY(), (btScalar)vec.GetZ()}};
-}
+void bulletTransformFromARGoS(btTransform* res, const CVector3 &vec, const CQuaternion &orientation = CQuaternion(1, 0, 0, 0));
 
 /**
  * Populate an ARGoS location vector and quaternion from a btTransform
  */
-static inline void bulletTransformToARGoS(const btTransform& transform, CVector3& locationOut, CQuaternion& orientationOut)
-{
-	btVector3 loc = transform.getOrigin();
-	btQuaternion rot = transform.getRotation();
-	locationOut.Set(loc.getX(), loc.getY(), loc.getZ());
-	orientationOut = CQuaternion(rot.getW(), rot.getX(), rot.getY(), rot.getZ());
-}
+void bulletTransformToARGoS(const btTransform* transform, CVector3& locationOut, CQuaternion& orientationOut);
+
+
 
 #endif //ARGOS3_BULLET_CBULLETMODEL_H

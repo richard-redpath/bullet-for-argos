@@ -5,6 +5,9 @@
 #include "CBulletCubeModel.h"
 #include <argos3/core/utility/math/box.h>
 
+#include "./bullet/src/btBulletDynamicsCommon.h"
+#include "transform_utils.h"
+
 /**
  * Creates a box to be added to the world. Created boxes have a mass and restitution of 0.5
  */

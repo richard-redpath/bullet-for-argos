@@ -2,6 +2,7 @@
 // Created by richard on 26/11/15.
 //
 
+#include "./bullet/src/btBulletDynamicsCommon.h"
 #include "CBulletMultibodyEntity.h"
 
 /**

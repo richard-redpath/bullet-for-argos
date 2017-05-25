@@ -9,7 +9,8 @@ set(PROJ_SRC_OFFSET plugins/simulator/physics_engines/bullet-for-argos/)
 set(BASE_PROJ_DIR src/${PROJ_SRC_OFFSET})
 
 include_directories("${BASE_PROJ_DIR}bullet/src")
-include_directories("${BASE_PROJ_DIR}src")
+include_directories("${BASE_PROJ_DIR}")
+include_directories("./src")
 
 find_package(Qt5 COMPONENTS Widgets Gui)
 add_definitions(${Qt5Widgets_DEFINITIONS} ${Qt5Gui_DEFINITIONS})

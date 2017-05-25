@@ -8,6 +8,8 @@
 #include "CBulletModel.h"
 #include "CMultibodyLinkEntity.h"
 
+class btCompoundShape;
+
 /**
  * A single part of a multibodied entity
  */

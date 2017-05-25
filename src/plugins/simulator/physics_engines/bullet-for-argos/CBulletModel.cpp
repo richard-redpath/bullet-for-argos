@@ -3,10 +3,34 @@
 //
 
 #include "CBulletModel.h"
+
+#include "./bullet/src/btBulletDynamicsCommon.h"
 #include <argos3/core/simulator/entity/embodied_entity.h>
 #include <argos3/core/simulator/simulator.h>
 #include <argos3/core/simulator/space/space.h>
 #include <argos3/core/utility/datatypes/datatypes.h>
+
+/**
+ * Create a btTransform from an ARGoS position vector and (optionally) quaternion. If no quaternion is provided then
+ * no rotation is assumed.
+ */
+void bulletTransformFromARGoS(btTransform* res, const CVector3 &vec, const CQuaternion &orientation)
+{
+	*res = btTransform {btQuaternion{(btScalar)orientation.GetX(), (btScalar)orientation.GetY(), (btScalar)orientation.GetZ(), (btScalar)orientation.GetW()},
+						btVector3{(btScalar)vec.GetX(), (btScalar)vec.GetY(), (btScalar)vec.GetZ()}};
+}
+
+/**
+ * Populate an ARGoS location vector and quaternion from a btTransform
+ */
+void bulletTransformToARGoS(const btTransform* transform, CVector3& locationOut, CQuaternion& orientationOut)
+{
+	btVector3 loc = transform->getOrigin();
+	btQuaternion rot = transform->getRotation();
+	locationOut.Set(loc.getX(), loc.getY(), loc.getZ());
+	orientationOut = CQuaternion(rot.getW(), rot.getX(), rot.getY(), rot.getZ());
+}
+
 
 CBulletModel::~CBulletModel()
 {

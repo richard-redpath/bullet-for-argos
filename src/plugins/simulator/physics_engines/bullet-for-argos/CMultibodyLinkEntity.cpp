@@ -5,6 +5,11 @@
 #include "CMultibodyLinkEntity.h"
 #include "CMultibodyEntity.h"
 
+#include "./bullet/src/btBulletDynamicsCommon.h"
+#include "CBulletModel.h"
+
+#include "transform_utils.h"
+
 CMultibodyLinkEntity::CMultibodyLinkEntity(CMultibodyEntity* parent, const Link &linkDef)
 	: CComposableEntity(parent, parent->GetId() + "_" + linkDef.name), defaultState(linkDef), currentState(linkDef)
 {

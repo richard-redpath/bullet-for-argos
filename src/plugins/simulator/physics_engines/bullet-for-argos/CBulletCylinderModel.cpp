@@ -2,8 +2,13 @@
 // Created by richard on 19/08/15.
 //
 
+#include "./bullet/src/btBulletDynamicsCommon.h"
 #include "CBulletCylinderModel.h"
 #include <argos3/core/utility/math/cylinder.h>
+#include "./bullet/src/btBulletDynamicsCommon.h"
+#include "CBulletModel.h"
+
+#include "transform_utils.h"
 
 /**
  * Constructor for bullet cylinders. Friction and restitution both set to 0.5

@@ -2,6 +2,7 @@
 // Created by rar500 on 22/10/15.
 //
 
+#include "./bullet/src/btBulletDynamicsCommon.h"
 #include <argos3/plugins/simulator/entities/box_entity.h>
 #include <argos3/plugins/simulator/entities/cylinder_entity.h>
 #include <argos3/core/wrappers/lua/lua_utility.h>
@@ -17,6 +18,18 @@
 #endif
 
 using namespace ticpp;
+
+inline btTransform bulletTransformFromARGoS(const CVector3 &vec, const CQuaternion &orientation = CQuaternion(1, 0, 0, 0))
+{
+  btTransform t;
+  bulletTransformFromARGoS(&t, vec, orientation);
+  return t;
+}
+
+void bulletTransformToARGoS(const btTransform& transform, CVector3& locationOut, CQuaternion& orientationOut)
+{
+  bulletTransformToARGoS(&transform, locationOut, orientationOut);
+}
 
 /**
  * Default constructor

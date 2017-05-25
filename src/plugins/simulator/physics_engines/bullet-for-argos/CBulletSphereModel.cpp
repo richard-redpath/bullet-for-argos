@@ -2,8 +2,10 @@
 // Created by richard on 19/08/15.
 //
 
+#include "./bullet/src/btBulletDynamicsCommon.h"
 #include "CBulletSphereModel.h"
 
+#include "transform_utils.h"
 /**
  * A simple sphere model for the bullet engine - Friction, rolling friction and restitution all set to 0.5
  */

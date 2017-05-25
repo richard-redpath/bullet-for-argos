@@ -5,6 +5,8 @@
 #ifndef ARGOS3_BULLET_CBULLETBOXMODEL_H
 #define ARGOS3_BULLET_CBULLETBOXMODEL_H
 
+class btBoxShape;
+
 #include <argos3/plugins/simulator/entities/box_entity.h>
 #include "CBulletModel.h"
 
