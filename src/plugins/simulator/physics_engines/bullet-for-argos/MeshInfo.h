@@ -9,8 +9,6 @@
 #include <map>
 #include <vector>
 
-#include "tinyobjloader/tiny_obj_loader.h"
-
 /**
  * Store data about a single texture. The renderId is provided
  * as a convenience for renderer to store internal texture IDs
