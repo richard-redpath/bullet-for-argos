@@ -29,7 +29,7 @@ CMotorActuatorEntity::CMotorActuatorEntity(const std::string iId, const std::str
 		  effortMax(iEffortMax),
 		  velocityTarget(0), velocityCurrent(0),
 		  positionTarget(NaN), positionCurrent(0),
-		  parent(parent), child(child),
+		  linkParent(parent), child(child),
 		  embodiedEntity(new CEmbodiedEntity(this)),
 		  position(position), orientation(orientation),
 		  axis(axis)
@@ -64,7 +64,7 @@ float CMotorActuatorEntity::getCurrentVelocity()
  */
 void CMotorActuatorEntity::SetRobot(CComposableEntity &c_entity)
 {
-	CSimulatedActuator::SetRobot(c_entity);
+	robot = &c_entity;
 }
 
 void CMotorActuatorEntity::Update()
@@ -75,8 +75,8 @@ void CMotorActuatorEntity::Update()
 void CMotorActuatorEntity::UpdateChildPosition()
 {
 	// Get parent transform in global space
-	CVector3 parentPosition = parent->GetEmbodiedEntity().GetOriginAnchor().Position;
-	CQuaternion parentOrientation = parent->GetEmbodiedEntity().GetOriginAnchor().Orientation;
+	CVector3 parentPosition = linkParent->GetEmbodiedEntity().GetOriginAnchor().Position;
+	CQuaternion parentOrientation = linkParent->GetEmbodiedEntity().GetOriginAnchor().Orientation;
 
 	// Get our position in global space
 	CVector3 globalPosition = parentPosition + rotateARGoSVector(position, parentOrientation);

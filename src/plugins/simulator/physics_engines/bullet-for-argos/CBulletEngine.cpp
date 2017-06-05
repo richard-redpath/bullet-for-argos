@@ -71,7 +71,7 @@ void CBulletEngine::Init(TConfigurationNode &t_tree)
 	inverseWorldScaleSquared = 1/worldScaleSquared;
 	dynamicsWorld->setGravity(btVector3{0, 0, -9.81}*worldScale);
 
-	std::cout<<"World scale = "<<worldScale<<"  Squared = "<<worldScaleSquared<<std::endl;
+//	std::cout<<"World scale = "<<worldScale<<"  Squared = "<<worldScaleSquared<<std::endl;
 }
 
 /**

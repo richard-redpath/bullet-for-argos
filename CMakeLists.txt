@@ -23,6 +23,7 @@ find_package(OpenGL REQUIRED)
 include_directories(${OPENGL_INCLUDE_DIRS})
 
 file(GLOB_RECURSE BULLET_SOURCE_FILES "${BASE_PROJ_DIR}bullet/src/*.cpp")
+file(GLOB_RECURSE TINYOBJLOADER_SOURCE_FILES "${BASE_PROJ_DIR}tinyobjloader/*.cpp")
 file(GLOB PLUGIN_SOURCE_FILES "${BASE_PROJ_DIR}*.cpp")
 file(GLOB PLUGIN_HEADER_FILES "${BASE_PROJ_DIR}*.h")
 
@@ -33,7 +34,8 @@ link_directories(${ARGOS_LIBRARY_DIRS})
 
 set(BULLET_PLUGIN_SOURCES
         ${PLUGIN_SOURCE_FILES}
-        ${BULLET_SOURCE_FILES})
+        ${BULLET_SOURCE_FILES}
+	${TINYOBJLOADER_SOURCE_FILES})
 
 add_library(argos3plugin_bullet SHARED
   ${BULLET_PLUGIN_SOURCES})

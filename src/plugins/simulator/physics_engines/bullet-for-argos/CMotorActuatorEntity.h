@@ -51,7 +51,7 @@ public:
 
 	void setPositionTarget(float position){}			// TODO: Implement, does it even have a use? - Maybe for servos?
 
-	CMultibodyLinkEntity* getParentEntity() { return parent; }
+	CMultibodyLinkEntity* getParentEntity() { return linkParent; }
 	CMultibodyLinkEntity* getChildEntity() { return child; }
 
 	virtual void SetRobot(CComposableEntity &entity);
@@ -88,8 +88,9 @@ private:
 	float velocityTarget, velocityCurrent;
 	float positionTarget, positionCurrent;
 
-	CMultibodyLinkEntity* parent;
+	CMultibodyLinkEntity* linkParent;
 	CMultibodyLinkEntity* child;
+	CComposableEntity* robot;
 
 	CVector3 position;
 	CQuaternion orientation;
